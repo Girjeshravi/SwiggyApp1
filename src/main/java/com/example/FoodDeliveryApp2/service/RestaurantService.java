@@ -38,7 +38,8 @@ public class RestaurantService {
             throw new RestaurantNotFoundException("Restaurant doesn't exist!!");
         }
 
-        Restaurant restaurant = restaurantRespository.findById(id).get();
+       // Restaurant restaurant = restaurantRespository.findById(id).get(); // replaced by below line
+        Restaurant restaurant = restaurantRespository.findRestaurantById(id);
         restaurant.setOpened(!restaurant.isOpened());
         restaurantRespository.save(restaurant);
 
@@ -69,5 +70,13 @@ public class RestaurantService {
         // prepare response
         return RestaurantTransformer.RestaurantToRestaurantResponse(savedRestaurant);
 
+    }
+
+    public RestaurantResponse findRestaurantMenuByContactNo(String contactNumber) {
+        Restaurant restaurant=restaurantRespository.findRestaurantMenuByContactNumber(contactNumber);
+        if(restaurant==null){
+            throw new RestaurantNotFoundException("invalid contact number");
+        }
+        return RestaurantTransformer.RestaurantToRestaurantResponse(restaurant);
     }
 }

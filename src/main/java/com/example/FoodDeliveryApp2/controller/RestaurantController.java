@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/restaurant")
 public class RestaurantController {
     final RestaurantService restaurantService;
+
     /**
      * Constructor Injection
-     * @param restaurantService  --> bean of restaurant Service
+     *
+     * @param restaurantService --> bean of restaurant Service
      */
     @Autowired
     public RestaurantController(RestaurantService restaurantService) {
@@ -23,26 +25,35 @@ public class RestaurantController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity addRestaurant(@RequestBody RestaurantRequest restaurantRequest){
+    public ResponseEntity addRestaurant(@RequestBody RestaurantRequest restaurantRequest) {
         RestaurantResponse restaurantResponse = restaurantService.addRestaurant(restaurantRequest);
         return new ResponseEntity(restaurantResponse, HttpStatus.CREATED);
     }
+
     @PutMapping("/update/status")
-    public ResponseEntity changeOpenedStatus(@RequestParam int id){
+    public ResponseEntity changeOpenedStatus(@RequestParam int id) {
         String message = restaurantService.changeOpenedStatus(id);
-        return new ResponseEntity(message,HttpStatus.ACCEPTED);
+        return new ResponseEntity(message, HttpStatus.ACCEPTED);
     }
 
 
     @PostMapping("/add/menu")
-    public ResponseEntity addMenuItemtToRestaurant(@RequestBody MenuRequest menuRequest){
+    public ResponseEntity addMenuItemtToRestaurant(@RequestBody MenuRequest menuRequest) {
         RestaurantResponse restaurantResponse = restaurantService.addMenuItemtToRestaurant(menuRequest);
-        return new ResponseEntity(restaurantResponse,HttpStatus.CREATED);
+        return new ResponseEntity(restaurantResponse, HttpStatus.CREATED);
     }
 
     // get menu of a restaurant
-
+    @GetMapping("/findrestaurant/contactNumber/{contactNumber}")
+    public ResponseEntity getRestaurantMenuByContactNo(@RequestParam("contactNumber") String contactNumber) {
+        try {
+            RestaurantResponse restaurantResponse = restaurantService.findRestaurantMenuByContactNo(contactNumber);
+            return new ResponseEntity(restaurantResponse, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+}
     // give all the restauratns who have served more than 'x' number of orders
 
     // give the restaurants which have maximum number of items in their menu and which are opened also
-}

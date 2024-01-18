@@ -27,7 +27,7 @@ public class RestaurantTransformer {
         //restaurant is just a variable name given above in function
         List<MenuResponse> menu = restaurant.getAvailableMenuItems()
                 .stream()
-                .map(foodItem -> MenuItemTransformer.MenuItemToMenuResponse(foodItem))
+                .map(x -> MenuItemTransformer.MenuItemToMenuResponse(x))  //i have replaced x with fooditem
                 .collect(Collectors.toList());
         // here fooditem can be any variable
 
